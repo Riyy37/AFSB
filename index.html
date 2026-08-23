@@ -1,102 +1,324 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Тренажер ОК | УФСБ г. Кемерово</title>
     <style>
-        /* ЗАЩИТА ОТ ВЫДЕЛЕНИЯ ТЕКСТА */
-        body { 
-            background-color: #313338; color: #dbdee1; font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; margin: 0;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax */
-        }
-        .container { max-width: 900px; margin: 0 auto; background-color: #2b2d31; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        h1 { color: #ffffff; border-bottom: 2px solid #1e1f22; padding-bottom: 10px; }
-        .progress { color: #949ba4; font-size: 14px; margin-bottom: 20px; font-weight: bold; }
-        
-        .application-box { 
-            background-color: #1e1f22; padding: 20px; border-radius: 8px; border: 1px solid #404249; 
-            margin-bottom: 20px; white-space: pre-wrap; font-family: monospace; font-size: 14px; 
-            line-height: 1.6; max-height: 500px; overflow-y: auto;
-        }
-        
-        .application-box::-webkit-scrollbar { width: 8px; }
-        .application-box::-webkit-scrollbar-track { background: #2b2d31; }
-        .application-box::-webkit-scrollbar-thumb { background: #1a1b1e; border-radius: 4px; }
-        
-        .actions { display: flex; gap: 15px; }
-        button { padding: 12px 24px; border: none; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.2s; }
-        .btn-approve { background-color: #23a559; color: white; }
-        .btn-approve:hover { background-color: #1a7c43; }
-        .btn-deny { background-color: #da373c; color: white; }
-        .btn-deny:hover { background-color: #a1282c; }
-        .btn-next { background-color: #5865F2; color: white; width: 100%; display: none; margin-top: 15px;}
-        .btn-next:hover { background-color: #4752c4; }
-        #feedback { margin-top: 20px; padding: 15px; border-radius: 6px; display: none; font-size: 15px; }
-        .correct { background-color: #124326; border: 1px solid #23a559; color: #a6f2c3; }
-        .wrong { background-color: #471417; border: 1px solid #da373c; color: #ffb3b6; }
-        #result-screen { display: none; text-align: center; }
-        #result-screen h2 { color: #ffffff; }
-    </style>
-</head>
-<body>
+      :root {
+        --bg: #232428;
+        --bg-elevated: #2b2d31;
+        --bg-card: #1e1f22;
+        --border: #3f4147;
+        --border-soft: #33353a;
+        --text: #e6e8eb;
+        --text-muted: #9aa0a6;
+        --text-dim: #6d737b;
+        --accent: #5865f2;
+        --accent-hover: #4752c4;
+        --green: #23a559;
+        --green-hover: #1a7c43;
+        --red: #da373c;
+        --red-hover: #a1282c;
+      }
 
-<div class="container">
-    <h1>📚 Тренажер Отдела Кадров УФСБ</h1>
-    
-    <div id="quiz-screen">
+      /* ЗАЩИТА ОТ ВЫДЕЛЕНИЯ ТЕКСТА */
+      body {
+        background-color: var(--bg);
+        background-image:
+          radial-gradient(
+            circle at 20% 0%,
+            rgba(88, 101, 242, 0.06),
+            transparent 40%
+          ),
+          radial-gradient(
+            circle at 80% 100%,
+            rgba(35, 165, 89, 0.04),
+            transparent 40%
+          );
+        color: var(--text);
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        padding: 0;
+        margin: 0;
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+      }
+      .container {
+        max-width: 860px;
+        margin: 28px auto;
+        background-color: var(--bg-elevated);
+        padding: 32px;
+        border-radius: 14px;
+        border: 1px solid var(--border-soft);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+      h1 {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0 0 20px 0;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .progress {
+        color: var(--text-muted);
+        font-size: 14px;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .application-box {
+        background-color: var(--bg-card);
+        padding: 22px;
+        border-radius: 10px;
+        border: 1px solid var(--border-soft);
+        margin-bottom: 22px;
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      /* Вопросы и ответы */
+      .qa-block {
+        margin-bottom: 18px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .qa-block:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+      .qa-question {
+        color: #ffffff;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+      .qa-answer {
+        color: var(--text-muted);
+        white-space: pre-wrap;
+      }
+      .qa-answer-empty {
+        color: var(--text-dim);
+        font-style: italic;
+      }
+
+      .actions {
+        display: flex;
+        gap: 14px;
+      }
+      button {
+        padding: 13px 26px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          box-shadow 0.15s ease,
+          background-color 0.15s ease;
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+      .btn-approve {
+        background-color: var(--green);
+        color: white;
+        box-shadow: 0 4px 12px rgba(35, 165, 89, 0.3);
+      }
+      .btn-approve:hover {
+        background-color: var(--green-hover);
+      }
+      .btn-deny {
+        background-color: var(--red);
+        color: white;
+        box-shadow: 0 4px 12px rgba(218, 55, 60, 0.3);
+      }
+      .btn-deny:hover {
+        background-color: var(--red-hover);
+      }
+      .btn-next {
+        background-color: var(--accent);
+        color: white;
+        width: 100%;
+        display: none;
+        margin-top: 18px;
+        box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+      }
+      .btn-next:hover {
+        background-color: var(--accent-hover);
+      }
+      #feedback {
+        margin-top: 20px;
+        padding: 16px 18px;
+        border-radius: 10px;
+        display: none;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .correct {
+        background-color: rgba(35, 165, 89, 0.12);
+        border: 1px solid var(--green);
+        color: #a6f2c3;
+      }
+      .wrong {
+        background-color: rgba(218, 55, 60, 0.12);
+        border: 1px solid var(--red);
+        color: #ffb3b6;
+      }
+      #result-screen {
+        display: none;
+        text-align: center;
+        padding: 20px 0;
+      }
+      #result-screen h2 {
+        color: #ffffff;
+        font-size: 26px;
+      }
+
+      /* ===== HEADER (шапка-оглавление на всю ширину) ===== */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 18px;
+        width: 100%;
+        padding: 14px 28px;
+        background: rgba(27, 28, 31, 0.92);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        box-sizing: border-box;
+        transition: transform 0.3s ease;
+      }
+      /* Скрытое состояние — шапка уезжает вверх при прокрутке вниз */
+      .site-header.hidden {
+        transform: translateY(-100%);
+      }
+      .site-header .emblem {
+        width: 58px;
+        height: 58px;
+        object-fit: contain;
+        flex-shrink: 0;
+        /* Запрет любого взаимодействия с картинкой */
+        pointer-events: none;
+        -webkit-user-drag: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+      .site-header .header-title {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        line-height: 1.35;
+        margin: 0;
+        text-align: left;
+      }
+      @media (max-width: 600px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+          gap: 10px;
+        }
+        .site-header .header-title {
+          font-size: 16px;
+        }
+        .container {
+          padding: 20px;
+          margin: 16px auto;
+        }
+        .actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="site-header">
+      <!-- Эмблема СОКР. Замените src на путь к вашему файлу с эмблемой -->
+      <img class="emblem" src="emblem.png" alt="Эмблема СОКР" />
+      <div class="header-title">
+        Отдел кадров при территориальном управлении ФСБ по г. Кемерово
+      </div>
+    </div>
+
+    <div class="container">
+      <h1>📚 Тренажер Отдела Кадров УФСБ</h1>
+
+      <div id="quiz-screen">
         <div class="progress" id="progress-text">Анкета 1 из 20</div>
-        
+
         <div class="application-box" id="app-content"></div>
 
         <div class="actions" id="action-buttons">
-            <!-- Передаем цифры вместо слов -->
-            <button class="btn-approve" onclick="checkAnswer(1)">✅ Одобрить</button>
-            <button class="btn-deny" onclick="checkAnswer(0)">❌ Отказать</button>
+          <!-- Передаем цифры вместо слов -->
+          <button class="btn-approve" onclick="checkAnswer(1)">
+            ✅ Одобрить
+          </button>
+          <button class="btn-deny" onclick="checkAnswer(0)">❌ Отказать</button>
         </div>
 
         <div id="feedback"></div>
-        <button class="btn-next" id="btn-next" onclick="nextApp()">Следующая анкета ➔</button>
-    </div>
+        <button class="btn-next" id="btn-next" onclick="nextApp()">
+          Следующая анкета ➔
+        </button>
+      </div>
 
-    <div id="result-screen">
+      <div id="result-screen">
         <h2>🏁 Тренировка завершена!</h2>
-        <p id="final-score" style="font-size: 18px;"></p>
-        <button class="btn-next" style="display: inline-block; width: auto;" onclick="location.reload()">Пройти заново</button>
+        <p id="final-score" style="font-size: 18px"></p>
+        <button
+          class="btn-next"
+          style="display: inline-block; width: auto"
+          onclick="location.reload()"
+        >
+          Пройти заново
+        </button>
+      </div>
     </div>
-</div>
 
-<script>
-    // ЗАЩИТА: Отключение правой кнопки мыши
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    <script>
+      // ЗАЩИТА: Отключение правой кнопки мыши
+      document.addEventListener("contextmenu", (event) =>
+        event.preventDefault(),
+      );
 
-    // ЗАЩИТА: Отключение копирования (даже если выделят через консоль)
-    document.addEventListener('copy', event => {
-        event.clipboardData.setData('text/plain', 'Копирование запрещено!');
+      // ЗАЩИТА: Отключение копирования (даже если выделят через консоль)
+      document.addEventListener("copy", (event) => {
+        event.clipboardData.setData("text/plain", "Копирование запрещено!");
         event.preventDefault();
-    });
+      });
 
-    // ЗАЩИТА: Отключение кнопок F12, Ctrl+Shift+I, Ctrl+U
-    document.onkeydown = function(e) {
-        if(e.keyCode == 123) return false; // F12
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
-        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
-        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
-    }
+      // ЗАЩИТА: Отключение кнопок F12, Ctrl+Shift+I, Ctrl+U
+      document.onkeydown = function (e) {
+        if (e.keyCode == 123) return false; // F12
+        if (e.ctrlKey && e.shiftKey && e.keyCode == "I".charCodeAt(0))
+          return false; // Ctrl+Shift+I
+        if (e.ctrlKey && e.shiftKey && e.keyCode == "C".charCodeAt(0))
+          return false; // Ctrl+Shift+C
+        if (e.ctrlKey && e.shiftKey && e.keyCode == "J".charCodeAt(0))
+          return false; // Ctrl+Shift+J
+        if (e.ctrlKey && e.keyCode == "U".charCodeAt(0)) return false; // Ctrl+U
+      };
 
-    // ==========================================
-    // ТУТ ТЫ ДОБАВЛЯЕШЬ СВОИ АНКЕТЫ
-    // Внимание! Теперь правильный ответ пишется так: 
-    // ans: 1 (Это ОДОБРИТЬ)
-    // ans: 0 (Это ОТКАЗАТЬ)
-    // ==========================================
-    const db = [
-    // === Пример 1: ЯВНЫЙ ИИ (гладкий, "энциклопедический" стиль) ===
-       {
-    t: `1. Ваш Discord юзернейм
+      // ==========================================
+      // ТУТ ТЫ ДОБАВЛЯЕШЬ СВОИ АНКЕТЫ
+      // Внимание! Теперь правильный ответ пишется так:
+      // ans: 1 (Это ОДОБРИТЬ)
+      // ans: 0 (Это ОТКАЗАТЬ)
+      // ==========================================
+      const db = [
+        // === Пример 1: ЯВНЫЙ ИИ (гладкий, "энциклопедический" стиль) ===
+        {
+          t: `1. Ваш Discord юзернейм
 grimwalker_92
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -179,15 +401,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 Да, я осознаю данное право Отдела Кадров и отношусь к этому с пониманием.`,
-    ans: 0,
-    r: "Отказ. Вся анкета от начала до конца написана характерным для ИИ языком: «представляет собой», «данный», «к числу», «коротко поясню» — живой подросток так не пишет ни один ответ, не то что все 28."
-},
- 
-// ========================================
-// АНКЕТА 2 — ЧИСТАЯ, ЖИВАЯ, БЕЗ НАРУШЕНИЙ
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Вся анкета от начала до конца написана характерным для ИИ языком: «представляет собой», «данный», «к числу», «коротко поясню» — живой подросток так не пишет ни один ответ, не то что все 28.",
+        },
+
+        // ========================================
+        // АНКЕТА 2 — ЧИСТАЯ, ЖИВАЯ, БЕЗ НАРУШЕНИЙ
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 tolya_shvedov
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -270,15 +492,15 @@ UTC+3, московский
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 Да, понимаю и отношусь с уважением`,
-    ans: 1,
-    r: "Одобрить. Ответы грамотные, но живые: есть разговорные вставки («ну», «тут нужна золотая середина»), личный опыт, нет ни одного ИИ-штампа. Нарушений правил не обнаружено."
-},
- 
-// ========================================
-// АНКЕТА 3 — НАРУШЕНИЕ: возраст персонажа [IC] < 18
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 1,
+          r: "Одобрить. Ответы грамотные, но живые: есть разговорные вставки («ну», «тут нужна золотая середина»), личный опыт, нет ни одного ИИ-штампа. Нарушений правил не обнаружено.",
+        },
+
+        // ========================================
+        // АНКЕТА 3 — НАРУШЕНИЕ: возраст персонажа [IC] < 18
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 xX_nikita_Xx
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -361,15 +583,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 Да`,
-    ans: 0,
-    r: "Отказ. Пункт 2.1 правил: возраст персонажа [IC] должен быть не менее 18 лет, здесь указано 16."
-},
- 
-// ========================================
-// АНКЕТА 4 — НАРУШЕНИЕ: ЧСО / плохая репутация
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 2.1 правил: возраст персонажа [IC] должен быть не менее 18 лет, здесь указано 16.",
+        },
+
+        // ========================================
+        // АНКЕТА 4 — НАРУШЕНИЕ: ЧСО / плохая репутация
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 serega_krutoy
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -452,15 +674,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 Да`,
-    ans: 0,
-    r: "Отказ. Пункт 4 правил: наличие ЧСО и подтверждённая плохая репутация (слив информации бандитам) — прямое основание для отказа, независимо от остальных грамотных ответов."
-},
- 
-// ========================================
-// АНКЕТА 5 — НАРУШЕНИЕ: серьёзные грамматические ошибки
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 4 правил: наличие ЧСО и подтверждённая плохая репутация (слив информации бандитам) — прямое основание для отказа, независимо от остальных грамотных ответов.",
+        },
+
+        // ========================================
+        // АНКЕТА 5 — НАРУШЕНИЕ: серьёзные грамматические ошибки
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 maks_ognennyi
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -543,15 +765,15 @@ maks_fire99 https://www.roblox.com/users/444444/profile
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да`,
-    ans: 0,
-    r: "Отказ. Пункт 7 правил: серьёзные грамматические ошибки практически во всех ответах («патамушто», «штобы», «ево», «гаварить», «вроди»). Также мотивация «власть и оружие» указывает на неадекватность (пункт 8)."
-},
- 
-// ========================================
-// АНКЕТА 6 — НАРУШЕНИЕ: менее 7 часов активности в неделю
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 7 правил: серьёзные грамматические ошибки практически во всех ответах («патамушто», «штобы», «ево», «гаварить», «вроди»). Также мотивация «власть и оружие» указывает на неадекватность (пункт 8).",
+        },
+
+        // ========================================
+        // АНКЕТА 6 — НАРУШЕНИЕ: менее 7 часов активности в неделю
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 lisa_pushistaya
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -634,15 +856,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 Да, понимаю`,
-    ans: 0,
-    r: "Отказ. Пункт 3 правил: менее 7 часов активности в неделю — формальное основание для отказа, несмотря на то что все остальные ответы качественные и живые."
-},
- 
-// ========================================
-// АНКЕТА 7 — НАРУШЕНИЕ: ФИО персонажа не соответствует логике РП
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 3 правил: менее 7 часов активности в неделю — формальное основание для отказа, несмотря на то что все остальные ответы качественные и живые.",
+        },
+
+        // ========================================
+        // АНКЕТА 7 — НАРУШЕНИЕ: ФИО персонажа не соответствует логике РП
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 vanya_specnaz
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -725,15 +947,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 Да`,
-    ans: 0,
-    r: "Отказ. Пункт 5 правил: ФИО персонажа не соответствует логике РП (использование имён реальных исторических диктаторов)."
-},
- 
-// ========================================
-// АНКЕТА 8 — НАРУШЕНИЕ: смешанный ИИ (только «сложные» ответы явно нейросетевые)
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 5 правил: ФИО персонажа не соответствует логике РП (использование имён реальных исторических диктаторов).",
+        },
+
+        // ========================================
+        // АНКЕТА 8 — НАРУШЕНИЕ: смешанный ИИ (только «сложные» ответы явно нейросетевые)
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 kirill_shadow
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -816,15 +1038,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да`,
-    ans: 0,
-    r: "Отказ. Пункт 6 правил: три «сложных» ответа (16, 18, 20) резко отличаются по стилю от остальных — типичный признак того, что игрок переписывал именно самые трудные вопросы у нейросети, а простые писал сам."
-},
- 
-// ========================================
-// АНКЕТА 9 — НАРУШЕНИЕ: неадекватность / мотивация "ради пушек"
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 6 правил: три «сложных» ответа (16, 18, 20) резко отличаются по стилю от остальных — типичный признак того, что игрок переписывал именно самые трудные вопросы у нейросети, а простые писал сам.",
+        },
+
+        // ========================================
+        // АНКЕТА 9 — НАРУШЕНИЕ: неадекватность / мотивация "ради пушек"
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 gunslinger_pro
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -907,15 +1129,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да но я и так лучший`,
-    ans: 0,
-    r: "Отказ. Пункт 8 правил: неадекватность, идёт чисто ради «крутых пушек» — мотивация, ответы на психологический тест и допуск к тайне прямо указывают на непонимание сути службы."
-},
- 
-// ========================================
-// АНКЕТА 10 — НОРМАЛЬНАЯ АНКЕТА С НЕБОЛЬШИМИ ОШИБКАМИ (в пределах допустимого)
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 8 правил: неадекватность, идёт чисто ради «крутых пушек» — мотивация, ответы на психологический тест и допуск к тайне прямо указывают на непонимание сути службы.",
+        },
+
+        // ========================================
+        // АНКЕТА 10 — НОРМАЛЬНАЯ АНКЕТА С НЕБОЛЬШИМИ ОШИБКАМИ (в пределах допустимого)
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 polina_grey
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -998,15 +1220,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да, понимаю`,
-    ans: 1,
-    r: "Одобрить. Есть мелкие опечатки и разговорные обороты, но общая грамотность в норме, ответы живые и осмысленные, серьёзных нарушений нет."
-},
- 
-// ========================================
-// АНКЕТА 11 — НАРУШЕНИЕ: возраст OOC < 14 лет
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 1,
+          r: "Одобрить. Есть мелкие опечатки и разговорные обороты, но общая грамотность в норме, ответы живые и осмысленные, серьёзных нарушений нет.",
+        },
+
+        // ========================================
+        // АНКЕТА 11 — НАРУШЕНИЕ: возраст OOC < 14 лет
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 timon_pro228
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -1089,15 +1311,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да`,
-    ans: 0,
-    r: "Отказ. Пункт 2 правил: реальный возраст [OOC] менее 14 лет — формальное основание для отказа."
-},
- 
-// ========================================
-// АНКЕТА 12 — ХОРОШАЯ АНКЕТА, ОДОБРИТЬ
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 2 правил: реальный возраст [OOC] менее 14 лет — формальное основание для отказа.",
+        },
+
+        // ========================================
+        // АНКЕТА 12 — ХОРОШАЯ АНКЕТА, ОДОБРИТЬ
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 egor_wolf17
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -1180,15 +1402,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да, понимаю`,
-    ans: 1,
-    r: "Одобрить. Развёрнутые, живые и грамотные ответы, хороший опыт, нарушений не обнаружено."
-},
- 
-// ========================================
-// АНКЕТА 13 — НАРУШЕНИЕ: ИИ только в тестовой части (этап 4)
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 1,
+          r: "Одобрить. Развёрнутые, живые и грамотные ответы, хороший опыт, нарушений не обнаружено.",
+        },
+
+        // ========================================
+        // АНКЕТА 13 — НАРУШЕНИЕ: ИИ только в тестовой части (этап 4)
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 dasha_wolf
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -1271,15 +1493,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да, понимаю`,
-    ans: 0,
-    r: "Отказ. Пункт 6 правил: вопросы 24-27 (тест на знание основ ФСБ) резко отличаются от остальных по стилю — явный канцелярский ИИ-текст, тогда как этапы 1-3 написаны живым языком. Похоже, что этап с фактами игрок сгенерировал нейросетью, а личные вопросы писал сам."
-},
- 
-// ========================================
-// АНКЕТА 14 — НАРУШЕНИЕ: слишком много суммарных ошибок в 2-4 этапах
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 6 правил: вопросы 24-27 (тест на знание основ ФСБ) резко отличаются от остальных по стилю — явный канцелярский ИИ-текст, тогда как этапы 1-3 написаны живым языком. Похоже, что этап с фактами игрок сгенерировал нейросетью, а личные вопросы писал сам.",
+        },
+
+        // ========================================
+        // АНКЕТА 14 — НАРУШЕНИЕ: слишком много суммарных ошибок в 2-4 этапах
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 roma_tiger09
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -1362,15 +1584,15 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да`,
-    ans: 0,
-    r: "Отказ. Пункт 9 правил: суммарное количество слабых/ошибочных ответов на этапах 2-4 превышает допустимые 4 (вопросы 13,14,16,18,19,20,24,26,27 — почти все поверхностные или неверные, а вопрос 19-20 прямо противоречат сути допуска к тайне)."
-},
- 
-// ========================================
-// АНКЕТА 15 — ХОРОШАЯ АНКЕТА, чуть менее опытная, но честная — ОДОБРИТЬ
-// ========================================
-{
-    t: `1. Ваш Discord юзернейм
+          ans: 0,
+          r: "Отказ. Пункт 9 правил: суммарное количество слабых/ошибочных ответов на этапах 2-4 превышает допустимые 4 (вопросы 13,14,16,18,19,20,24,26,27 — почти все поверхностные или неверные, а вопрос 19-20 прямо противоречат сути допуска к тайне).",
+        },
+
+        // ========================================
+        // АНКЕТА 15 — ХОРОШАЯ АНКЕТА, чуть менее опытная, но честная — ОДОБРИТЬ
+        // ========================================
+        {
+          t: `1. Ваш Discord юзернейм
 sonya_moon15
  
 2. Ваш Roblox юзернейм | Ссылка на Roblox профиль.
@@ -1453,64 +1675,122 @@ UTC+3
  
 28. Понимаете ли вы, что Отдел Кадров вправе отказать вам без объяснения причин?
 да, понимаю и не обижусь`,
-    ans: 1,
-    r: "Одобрить. Мало опыта и скромные знания теста, но это не является причиной отказа по правилам — важна честность, живой стиль и адекватная позиция в психологическом тесте."
-}
-];
-    // ==========================================
+          ans: 1,
+          r: "Одобрить. Мало опыта и скромные знания теста, но это не является причиной отказа по правилам — важна честность, живой стиль и адекватная позиция в психологическом тесте.",
+        },
+      ];
+      // ==========================================
 
-    let currentIndex = 0;
-    let score = 0;
+      let currentIndex = 0;
+      let score = 0;
 
-    const appContent = document.getElementById('app-content');
-    const progressText = document.getElementById('progress-text');
-    const feedback = document.getElementById('feedback');
-    const actionButtons = document.getElementById('action-buttons');
-    const btnNext = document.getElementById('btn-next');
-    const quizScreen = document.getElementById('quiz-screen');
-    const resultScreen = document.getElementById('result-screen');
-    const finalScore = document.getElementById('final-score');
+      const appContent = document.getElementById("app-content");
+      const progressText = document.getElementById("progress-text");
+      const feedback = document.getElementById("feedback");
+      const actionButtons = document.getElementById("action-buttons");
+      const btnNext = document.getElementById("btn-next");
+      const quizScreen = document.getElementById("quiz-screen");
+      const resultScreen = document.getElementById("result-screen");
+      const finalScore = document.getElementById("final-score");
 
-    function loadApp() {
-        feedback.style.display = 'none';
-        btnNext.style.display = 'none';
-        actionButtons.style.display = 'flex';
-        
+      // Разбивает текст анкеты на блоки «вопрос — ответ»
+      function renderApplication(text) {
+        const lines = text.split("\n");
+        const blocks = [];
+        let current = null;
+
+        for (const raw of lines) {
+          const line = raw.trim();
+          if (!line) continue;
+
+          // Новая строка вопроса: начинается с номера и точки, напр. "1. ..."
+          if (/^\d+\.\s/.test(line)) {
+            if (current) blocks.push(current);
+            current = { q: line, a: [] };
+          } else if (current) {
+            current.a.push(line);
+          } else {
+            // Текст до первого вопроса — просто выводим как есть
+            if (!blocks.length) blocks.push({ q: null, a: [line] });
+            else blocks[blocks.length - 1].a.push(line);
+          }
+        }
+        if (current) blocks.push(current);
+
+        return blocks
+          .map((b) => {
+            const answer = b.a.join("\n");
+            const answerHtml = answer
+              ? `<div class="qa-answer">${answer}</div>`
+              : `<div class="qa-answer qa-answer-empty">— нет ответа —</div>`;
+            const questionHtml = b.q
+              ? `<div class="qa-question">${b.q}</div>`
+              : "";
+            return `<div class="qa-block">${questionHtml}${answerHtml}</div>`;
+          })
+          .join("");
+      }
+
+      function loadApp() {
+        feedback.style.display = "none";
+        btnNext.style.display = "none";
+        actionButtons.style.display = "flex";
+
         progressText.innerText = `Анкета ${currentIndex + 1} из ${db.length}`;
-        appContent.innerText = db[currentIndex].t;
-    }
+        appContent.innerHTML = renderApplication(db[currentIndex].t);
+      }
 
-    function checkAnswer(decision) {
-        actionButtons.style.display = 'none';
-        feedback.style.display = 'block';
-        btnNext.style.display = 'block';
+      function checkAnswer(decision) {
+        actionButtons.style.display = "none";
+        feedback.style.display = "block";
+        btnNext.style.display = "block";
 
         const currentApp = db[currentIndex];
 
         if (decision === currentApp.ans) {
-            score++;
-            feedback.className = 'correct';
-            feedback.innerHTML = `<strong>✅ Правильное решение!</strong><br><br>${currentApp.r}`;
+          score++;
+          feedback.className = "correct";
+          feedback.innerHTML = `<strong>✅ Правильное решение!</strong><br><br>${currentApp.r}`;
         } else {
-            feedback.className = 'wrong';
-            feedback.innerHTML = `<strong>❌ Ошибка проверяющего!</strong><br><br>${currentApp.r}`;
+          feedback.className = "wrong";
+          feedback.innerHTML = `<strong>❌ Ошибка проверяющего!</strong><br><br>${currentApp.r}`;
         }
-    }
+      }
 
-    function nextApp() {
+      function nextApp() {
         currentIndex++;
         if (currentIndex >= db.length) {
-            quizScreen.style.display = 'none';
-            resultScreen.style.display = 'block';
-            finalScore.innerHTML = `Твой результат: <strong>${score} из ${db.length}</strong> правильных вердиктов.`;
+          quizScreen.style.display = "none";
+          resultScreen.style.display = "block";
+          finalScore.innerHTML = `Твой результат: <strong>${score} из ${db.length}</strong> правильных вердиктов.`;
         } else {
-            loadApp();
+          loadApp();
         }
-    }
+      }
 
-    loadApp();
-</script>
+      // ===== Хидер: скрывается при прокрутке вниз, появляется при прокрутке вверх =====
+      const header = document.querySelector(".site-header");
+      let lastScrollY = window.scrollY;
 
-    
-</body>
+      window.addEventListener(
+        "scroll",
+        () => {
+          const currentScrollY = window.scrollY;
+
+          // Прокрутка вниз и не в самом верху — прячем шапку
+          if (currentScrollY > lastScrollY && currentScrollY > 60) {
+            header.classList.add("hidden");
+          } else {
+            // Прокрутка вверх или в самом верху — показываем шапку
+            header.classList.remove("hidden");
+          }
+
+          lastScrollY = currentScrollY;
+        },
+        { passive: true },
+      );
+
+      loadApp();
+    </script>
+  </body>
 </html>
